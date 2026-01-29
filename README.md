@@ -1,4 +1,4 @@
-npm run dev
+# npm run dev
 
 # React + TypeScript + Vite
 
