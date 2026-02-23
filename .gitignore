@@ -11,7 +11,7 @@ node_modules
 dist
 dist-ssr
 *.local
-
+extracted_logs/
 # Editor directories and files
 .vscode/*
 !.vscode/extensions.json
@@ -22,3 +22,15 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
+
+# Build & Deploy
+*.zip
+app.zip
+deploy.zip
+
+# Environment Variables
+.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local

@@ -1,6 +1,7 @@
 import React from 'react';
 import { Anchor, Wifi, WifiOff } from 'lucide-react';
 import type { ConnectionStatus } from '../types';
+import { WeatherWidget } from './WeatherWidget'; // <-- Fix import
 
 interface HeaderProps {
   status: ConnectionStatus;
@@ -22,22 +23,22 @@ export const Header: React.FC<HeaderProps> = ({ status, onConnect, onDisconnect 
       </div>
 
       <div className="flex items-center gap-4">
-        <div className={`flex items-center gap-2 px-3 py-1 rounded-full text-xs font-mono border ${
-          status === 'connected' 
-            ? 'bg-green-900/30 border-green-500/50 text-green-400' 
+        <WeatherWidget />
+
+        <div className={`flex items-center gap-2 px-3 py-1 rounded-full text-xs font-mono border ${status === 'connected'
+            ? 'bg-green-900/30 border-green-500/50 text-green-400'
             : 'bg-red-900/30 border-red-500/50 text-red-400'
-        }`}>
+          }`}>
           {status === 'connected' ? <Wifi className="w-3 h-3" /> : <WifiOff className="w-3 h-3" />}
           {status.toUpperCase()}
         </div>
 
         <button
           onClick={status === 'connected' ? onDisconnect : onConnect}
-          className={`px-6 py-2 rounded font-mono font-bold transition-all duration-300 ${
-            status === 'connected'
+          className={`px-6 py-2 rounded font-mono font-bold transition-all duration-300 ${status === 'connected'
               ? 'bg-red-500/20 hover:bg-red-500/40 text-red-400 border border-red-500/50'
               : 'bg-neon-green/10 hover:bg-neon-green/20 text-neon-green border border-neon-green/50 hover:shadow-[0_0_15px_rgba(100,255,218,0.3)]'
-          }`}
+            }`}
         >
           {status === 'connected' ? 'DISCONNECT' : 'CONNECT SYSTEM'}
         </button>
