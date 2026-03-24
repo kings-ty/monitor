@@ -137,32 +137,6 @@ export const useSerial = () => {
         });
       };
 
-      if (lower.includes('pressure:') || lower.includes('mean pressure')) {
-        const val = extractValue(trimmed);
-        if (val !== null) updateState(prev => ({ ...prev, pressure: val, timestamp: Date.now() }));
-        return;
-      }
-      if (lower.includes('temperature:') || lower.includes('mean temp')) {
-        const val = extractValue(trimmed.replace('deg c', ''));
-        if (val !== null) updateState(prev => ({ ...prev, temp: val, timestamp: Date.now() }));
-        return;
-      }
-      if (lower.includes('depth:') || lower.includes('mean depth')) {
-        const val = extractValue(trimmed);
-        if (val !== null) updateState(prev => ({ ...prev, depth: val, timestamp: Date.now() }));
-        return;
-      }
-      if (lower.includes('altitude:') || lower.includes('mean altitude')) {
-        const val = extractValue(trimmed);
-        if (val !== null) updateState(prev => ({ ...prev, altitude: val, timestamp: Date.now() }));
-        return;
-      }
-      if (lower.includes('signal strength(rssi)')) {
-        const val = extractValue(trimmed);
-        if (val !== null) updateState(prev => ({ ...prev, rssi: val, timestamp: Date.now() }));
-        return;
-      }
-
       // New format: D:1.23,T:24.5,PH:1.5,EC:2.1,aDO:0.8,O2:8.5
       // The string might have prefix: "🎉 [Rx Success] Data: D:1.23,T:24..."
       if (trimmed.includes('D:') && trimmed.includes(',') && trimmed.includes('O2:')) {
@@ -186,6 +160,8 @@ export const useSerial = () => {
             case 'PH': parsed.ph = isNaN(numVal) ? 0 : numVal; break;
             case 'EC': parsed.ec = isNaN(numVal) ? 0 : numVal; break;
             case 'aDO': parsed.ado = isNaN(numVal) ? 0 : numVal; break;
+            case 'VOLT':
+            case 'V': parsed.voltage = isNaN(numVal) ? 0 : numVal; break;
             case 'O2':
               if (val === 'Err') {
                 parsed.o2Str = 'Err';
@@ -200,6 +176,38 @@ export const useSerial = () => {
         updateState((prev) => ({ ...prev, ...parsed }));
         return;
       }
+
+      if (lower.includes('pressure:') || lower.includes('mean pressure')) {
+        const val = extractValue(trimmed);
+        if (val !== null) updateState(prev => ({ ...prev, pressure: val, timestamp: Date.now() }));
+        return;
+      }
+      if (lower.includes('temperature:') || lower.includes('mean temp')) {
+        const val = extractValue(trimmed.replace('deg c', ''));
+        if (val !== null) updateState(prev => ({ ...prev, temp: val, timestamp: Date.now() }));
+        return;
+      }
+      if (lower.includes('depth:') || lower.includes('mean depth')) {
+        const val = extractValue(trimmed);
+        if (val !== null) updateState(prev => ({ ...prev, depth: val, timestamp: Date.now() }));
+        return;
+      }
+      if (lower.includes('altitude:') || lower.includes('mean altitude')) {
+        const val = extractValue(trimmed);
+        if (val !== null) updateState(prev => ({ ...prev, altitude: val, timestamp: Date.now() }));
+        return;
+      }
+      if (lower.includes('voltage:') || lower.includes('volt:') || lower.includes('batt:')) {
+        const val = extractValue(trimmed);
+        if (val !== null) updateState(prev => ({ ...prev, voltage: val, timestamp: Date.now() }));
+        return;
+      }
+      if (lower.includes('signal strength(rssi)')) {
+        const val = extractValue(trimmed);
+        if (val !== null) updateState(prev => ({ ...prev, rssi: val, timestamp: Date.now() }));
+        return;
+      }
+
 
       const parts = trimmed.split(',');
       if (parts.length >= 1 && !trimmed.includes(':') && trimmed.includes(',')) {

@@ -6,8 +6,8 @@ interface BatteryWidgetProps {
 }
 
 export const BatteryWidget: React.FC<BatteryWidgetProps> = ({ voltage }) => {
-  // Map 10V-13V to 0-100%
-  const percentage = Math.min(Math.max(((voltage - 10) / 3) * 100, 0), 100);
+  // Map 0V-15V to 0-100%
+  const percentage = Math.min(Math.max((voltage / 15) * 100, 0), 100);
   
   // Circumference for SVG circle (r=40) => 2*pi*40 ≈ 251.2
   const circumference = 251.2;
